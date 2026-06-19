@@ -1,0 +1,4 @@
+node_modules/
+vimium-c-source/node_modules/
+.DS_Store
+*.log

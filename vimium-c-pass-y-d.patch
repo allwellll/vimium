@@ -1,0 +1,14 @@
+diff --git a/content/visual.ts b/content/visual.ts
+--- a/content/visual.ts
++++ b/content/visual.ts
+@@ -790,6 +790,11 @@ export const activate = (options: CmdOptions[kFgCmd.visualMode], count: number):
+       "cm".includes(key[0]) ? deactivate() : yank(key < "b" ? kYank.NotExit : kYank.Exit)
+       return esc!(HandlerResult.Prevent)
+     }
++    if (!currentPrefix && !currentKeys && (key === "y" || key === "d")) {
++      retainSelection = 1
++      return HandlerResult.Nothing
++    }
+     const childAction = keyMap[currentPrefix + key],
+     newActions = (<RegExpOne> /^v\d/).test(key) ? +key.slice(1) : key === "0" && currentKeys ? void 0
+         : childAction || keyMap[key]

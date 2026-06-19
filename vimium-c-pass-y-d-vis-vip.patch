@@ -1,0 +1,14 @@
+--- /Users/wangyaqi49/Documents/Codex/2026-06-19/users-wangyaqi49-code-room-web-highlight/work/vimium-c-master/background/key_mappings.ts	2025-04-15 01:19:36
++++ /Users/wangyaqi49/code_room/extention/vimium/vimium-c-source/background/key_mappings.ts	2026-06-19 22:12:16
+@@ -875,9 +875,10 @@
+     /* same as b */ B: VisualAction.word | VisualAction.dec,
+     G: VisualAction.documentBoundary | VisualAction.inc, gg: VisualAction.documentBoundary | VisualAction.dec,
+ 
+-    o: VisualAction.Reverse, a: VisualAction.NextKey, g: VisualAction.NextKey,
++    o: VisualAction.Reverse, a: VisualAction.NextKey, i: VisualAction.NextKey, g: VisualAction.NextKey,
+     aw: VisualAction.LexicalWord, as: VisualAction.LexicalSentence,
+         ap: VisualAction.LexicalParagraph, "a}": VisualAction.LexicalParagraph,
++    is: VisualAction.LexicalSentence, ip: VisualAction.LexicalParagraph,
+ 
+     y: VisualAction.Yank, Y: VisualAction.YankLine, C: VisualAction.YankWithoutExit, "c-s-c": VisualAction.YankRichText,
+     p: VisualAction.YankAndNewTab, P: VisualAction.YankAndOpen,
