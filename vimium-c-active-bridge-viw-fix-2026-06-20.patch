@@ -1,0 +1,71 @@
+diff --git a/vimium-c-source/content/visual.ts b/vimium-c-source/content/visual.ts
+index ef07fdb..b55bfb6 100644
+--- a/vimium-c-source/content/visual.ts
++++ b/vimium-c-source/content/visual.ts
+@@ -241,6 +241,47 @@ export const activate = (options: CmdOptions[kFgCmd.visualMode], count: number):
+     di_ = kDirTy.right
+   }
+ 
++  const selectCurrentWord = (): boolean => {
++    const range = rangeCount_(curSelection) && curSelection.getRangeAt(0), focus = range && range.cloneRange()
++    if (!focus) { return false }
++    focus.collapse(true)
++    let node = focus.startContainer, offset = focus.startOffset
++    if (!isNode_(node, kNode.TEXT_NODE)) {
++      const child = getNodeChild_(node, curSelection, offset + 1) || getNodeChild_(node, curSelection, offset)
++      if (!child || !isNode_(child, kNode.TEXT_NODE)) { return false }
++      node = child
++      offset = Math.min((node as Text).data.length, offset)
++    }
++    const text = (node as Text).data, len = text.length, wordRe = <RegExpOne> /[\p{L}\p{N}_]/u
++    let start = Math.min(offset, len), end = start
++    while (start > 0 && wordRe.test(text[start - 1])) { start-- }
++    while (end < len && wordRe.test(text[end])) { end++ }
++    if (start === end) { return false }
++    const wordRange = doc.createRange()
++    wordRange.setStart(node, start)
++    wordRange.setEnd(node, end)
++    curSelection.removeAllRanges()
++    curSelection.addRange(wordRange)
++    di_ = kDirTy.right
++    diType_ = DiType.Normal
++    return true
++  }
++
++  const passShortcutToPage = (event: HandlerNS.Event, key: string): HandlerResult => {
++    retainSelection = 1
++    setTimeout((): void => {
++      doc.dispatchEvent(new KeyboardEvent("keydown", {
++        key,
++        code: event.e.code,
++        keyCode: event.i,
++        which: event.i,
++        bubbles: true,
++        cancelable: true
++      } as KeyboardEventInit))
++    }, 0)
++    return HandlerResult.Prevent
++  }
++
+   /** @unknown_di_result */
+ const commandHandler = (command: VisualAction, count: number): void => {
+ 
+@@ -604,6 +645,8 @@ const ensureLine = (command1: number, s0: string): void => {
+     yank(([kYank.Exit, kYank.Exit, kYank.NotExit, ReuseType.current, ReuseType.newFg, kYank.RichTextButNotExit
+           ] as const)[command - VisualAction.Yank])
+     return
++  } else if (command === VisualAction.LexicalWord && selectCurrentWord()) {
++    mode = VisualModeNS.Mode.Visual
+   } else if (command > VisualAction.MaxNotLexical) {
+     const entity = (command - VisualAction.MaxNotLexical) as kG.sentence | kG.word
+     mode_ = VisualModeNS.Mode.Visual
+@@ -791,8 +834,7 @@ const ensureLine = (command1: number, s0: string): void => {
+       return esc!(HandlerResult.Prevent)
+     }
+     if (!currentPrefix && !currentKeys && (key === "y" || key === "d") && getSelectionText(1, curSelection)) {
+-      retainSelection = 1
+-      return HandlerResult.PassKey
++      return passShortcutToPage(event, key)
+     }
+     const childAction = keyMap[currentPrefix + key],
+     newActions = (<RegExpOne> /^v\d/).test(key) ? +key.slice(1) : key === "0" && currentKeys ? void 0

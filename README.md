@@ -4,20 +4,20 @@
 
 ## 更新时间
 
-- 2026-06-20 10:41 CST
+- 2026-06-20 10:49 CST
 
 ## 改动说明
 
 1. **Visual mode 放行 `y` / `d`**
    - 在 Vimium C visual mode 中，未输入数字前缀或组合前缀，且当前有选中文本时，`y` 和 `d` 不再由 Vimium C 消费。
-   - 这两个按键会真正 pass through 给页面和其他扩展，不需要在 Vimium C 的排除按键里配置 `y` / `d`。
+   - 这两个按键会通过主动桥接事件交给页面和其他扩展，不需要在 Vimium C 的排除按键里配置 `y` / `d`。
    - 没有选中文本时，`y` / `d` 保持 Vimium C 原有行为，不会全站失效。
    - 配合 Web Highlight 扩展后：
      - `y`：使用最近一次高亮颜色标注当前选区。
      - `d`：删除当前 Vimium 光标 / 选区所在的高亮标记。
 
 2. **支持 Vim 风格 text object**
-   - `viw` / `vaw`：选中当前词。
+   - `viw` / `vaw`：按当前光标所在文本节点的词边界选中当前词。
    - `vis`：选中当前句子。
    - `vip`：选中当前段落。
    - 原有 `vas` / `vap` 保持可用。
@@ -31,7 +31,7 @@
 ```text
 vimium-c-source/                         # 修改后的 Vimium C 源码
 vimium-c-pass-y-d/                       # 已构建、可直接加载的扩展目录
-vimium-c-pass-y-d-selected-text-only-2026-06-20.zip
+vimium-c-active-bridge-viw-fix-2026-06-20.zip
 vimium-c-pass-y-d-vis-vip-viw-vaw-caret-selected.patch          # 本次完整补丁
 vimium-c-pass-y-d.patch                # 早期仅 y/d 放行补丁
 vimium-c-pass-y-d-install.md             # 本地安装说明
