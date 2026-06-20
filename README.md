@@ -9,7 +9,7 @@
 ## 改动说明
 
 1. **Visual mode 放行 `y` / `d`**
-   - 在 Vimium C visual mode 中，未输入数字前缀或组合前缀时，`y` 和 `d` 不再由 Vimium C 消费。
+   - 在 Vimium C visual mode 中，未输入数字前缀或组合前缀，且当前有选中文本时，`y` 和 `d` 不再由 Vimium C 消费。
    - 这两个按键会继续冒泡给页面和其他扩展。
    - 配合 Web Highlight 扩展后：
      - `y`：使用最近一次高亮颜色标注当前选区。
@@ -30,8 +30,8 @@
 ```text
 vimium-c-source/                         # 修改后的 Vimium C 源码
 vimium-c-pass-y-d/                       # 已构建、可直接加载的扩展目录
-vimium_c-pass-y-d-vis-vip-viw-vaw-caret-2.12.3-chrome.zip
-vimium-c-pass-y-d-vis-vip-viw-vaw-caret.patch          # 本次完整补丁
+vimium_c-pass-y-d-vis-vip-viw-vaw-caret-selected-2.12.3-chrome.zip
+vimium-c-pass-y-d-vis-vip-viw-vaw-caret-selected.patch          # 本次完整补丁
 vimium-c-pass-y-d.patch                # 早期仅 y/d 放行补丁
 vimium-c-pass-y-d-install.md             # 本地安装说明
 ```
