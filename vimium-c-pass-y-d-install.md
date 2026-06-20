@@ -2,7 +2,9 @@
 
 本构建基于 Vimium C 2.12.3，包含以下改动：
 
-1. Visual mode 下 `有选中文本时 `y` / `d` 放行给页面和其他扩展。
+1. Visual mode 下有选中文本时，`y` / `d` 真正 pass through 给页面和其他扩展。
+   - 不需要在 Vimium C 的排除按键里配置 `y` / `d`。
+   - 没有选中文本时，`y` / `d` 保持 Vimium C 原有行为。
    - `y` 可由 Web Highlight 扩展处理为“最近色高亮”。
    - `d` 可由 Web Highlight 扩展处理为“删除当前高亮”。
 2. Visual mode 支持 `viw` / `vaw` / `vis` / `vip`：
@@ -28,7 +30,7 @@
 
 ```text
 /Users/wangyaqi49/code_room/extention/vimium/vimium-c-pass-y-d
-/Users/wangyaqi49/code_room/extention/vimium/vimium_c-pass-y-d-vis-vip-viw-vaw-caret-selected-2.12.3-chrome.zip
-/Users/wangyaqi49/code_room/extention/vimium/vimium-c-pass-y-d-vis-vip-viw-vaw-caret-selected.patch
+/Users/wangyaqi49/code_room/extention/vimium/vimium-c-pass-y-d-selected-text-only-2026-06-20.zip
+/Users/wangyaqi49/code_room/extention/vimium/vimium-c-pass-y-d-selected-text-only-2026-06-20.patch
 /Users/wangyaqi49/code_room/extention/vimium/vimium-c-source
 ```

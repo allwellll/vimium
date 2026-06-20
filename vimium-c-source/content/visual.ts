@@ -792,7 +792,7 @@ const ensureLine = (command1: number, s0: string): void => {
     }
     if (!currentPrefix && !currentKeys && (key === "y" || key === "d") && getSelectionText(1, curSelection)) {
       retainSelection = 1
-      return HandlerResult.Nothing
+      return HandlerResult.PassKey
     }
     const childAction = keyMap[currentPrefix + key],
     newActions = (<RegExpOne> /^v\d/).test(key) ? +key.slice(1) : key === "0" && currentKeys ? void 0
