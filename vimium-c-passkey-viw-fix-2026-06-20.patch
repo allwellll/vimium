@@ -1,0 +1,36 @@
+diff --git a/vimium-c-source/content/visual.ts b/vimium-c-source/content/visual.ts
+index b55bfb6..ffe5131 100644
+--- a/vimium-c-source/content/visual.ts
++++ b/vimium-c-source/content/visual.ts
+@@ -267,21 +267,6 @@ export const activate = (options: CmdOptions[kFgCmd.visualMode], count: number):
+     return true
+   }
+ 
+-  const passShortcutToPage = (event: HandlerNS.Event, key: string): HandlerResult => {
+-    retainSelection = 1
+-    setTimeout((): void => {
+-      doc.dispatchEvent(new KeyboardEvent("keydown", {
+-        key,
+-        code: event.e.code,
+-        keyCode: event.i,
+-        which: event.i,
+-        bubbles: true,
+-        cancelable: true
+-      } as KeyboardEventInit))
+-    }, 0)
+-    return HandlerResult.Prevent
+-  }
+-
+   /** @unknown_di_result */
+ const commandHandler = (command: VisualAction, count: number): void => {
+ 
+@@ -834,7 +819,8 @@ const ensureLine = (command1: number, s0: string): void => {
+       return esc!(HandlerResult.Prevent)
+     }
+     if (!currentPrefix && !currentKeys && (key === "y" || key === "d") && getSelectionText(1, curSelection)) {
+-      return passShortcutToPage(event, key)
++      retainSelection = 1
++      return HandlerResult.PassKey
+     }
+     const childAction = keyMap[currentPrefix + key],
+     newActions = (<RegExpOne> /^v\d/).test(key) ? +key.slice(1) : key === "0" && currentKeys ? void 0
