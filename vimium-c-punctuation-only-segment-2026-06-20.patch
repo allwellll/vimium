@@ -1,0 +1,13 @@
+diff --git a/vimium-c-source/content/visual.ts b/vimium-c-source/content/visual.ts
+index 79e3a27..334ce2e 100644
+--- a/vimium-c-source/content/visual.ts
++++ b/vimium-c-source/content/visual.ts
+@@ -267,7 +267,7 @@ export const activate = (options: CmdOptions[kFgCmd.visualMode], count: number):
+     return true
+   }
+ 
+-  const isSegmentBoundary = (char: string): boolean => !char || (<RegExpOne> /[\s\p{P}\p{S}]/u).test(char)
++  const isSegmentBoundary = (char: string): boolean => !char || (<RegExpOne> /[\p{P}\p{S}]/u).test(char)
+ 
+   const movePunctuationSegment = (command: VisualAction, count: number): void => {
+     const direction: ForwardDir = command === VisualAction.PunctuationSegmentBack ? kDirTy.left : kDirTy.right

@@ -267,7 +267,7 @@ export const activate = (options: CmdOptions[kFgCmd.visualMode], count: number):
     return true
   }
 
-  const isSegmentBoundary = (char: string): boolean => !char || (<RegExpOne> /[\s\p{P}\p{S}]/u).test(char)
+  const isSegmentBoundary = (char: string): boolean => !char || (<RegExpOne> /[\p{P}\p{S}]/u).test(char)
 
   const movePunctuationSegment = (command: VisualAction, count: number): void => {
     const direction: ForwardDir = command === VisualAction.PunctuationSegmentBack ? kDirTy.left : kDirTy.right
