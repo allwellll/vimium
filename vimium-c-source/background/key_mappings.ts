@@ -870,9 +870,9 @@ export const visualKeys_: VisualModeNS.KeyMap = {
     $: VisualAction.lineBoundary | VisualAction.inc, 0: VisualAction.lineBoundary | VisualAction.dec,
     "}": VisualAction.paragraph | VisualAction.inc, "{": VisualAction.paragraph | VisualAction.dec,
     ")": VisualAction.sentence | VisualAction.inc, "(": VisualAction.sentence | VisualAction.dec,
-    w: VisualAction.vimWord | VisualAction.inc, /* same as w */ W: VisualAction.vimWord | VisualAction.inc,
-    e: VisualAction.word | VisualAction.inc, b: VisualAction.word | VisualAction.dec,
-    /* same as b */ B: VisualAction.word | VisualAction.dec,
+    w: VisualAction.vimWord | VisualAction.inc, W: VisualAction.PunctuationSegmentForward,
+    e: VisualAction.word | VisualAction.inc, E: VisualAction.PunctuationSegmentEnd,
+    b: VisualAction.word | VisualAction.dec, B: VisualAction.PunctuationSegmentBack,
     G: VisualAction.documentBoundary | VisualAction.inc, gg: VisualAction.documentBoundary | VisualAction.dec,
 
     o: VisualAction.Reverse, a: VisualAction.NextKey, i: VisualAction.NextKey, g: VisualAction.NextKey,

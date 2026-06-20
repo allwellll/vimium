@@ -154,9 +154,9 @@ zoomIn:[47,1,0],zoomOut:[47,1,0,{$count:-1}],zoomReset:[47,1,0,{reset:!0}]};let 
 "open-link":46,"open-url":46,"direct-open":46,"open-directly":46,"directly-open":46,"open-direct":46,"copy-image":36,
 "edit-url":64,edit:65,"edit-text":65,input:67,"focus-input":67,editable:67,"focus-editable":67,visual:66,select:66}
 ;t.Yn=["character","word","","lineboundary","line","sentence","paragraphboundary","paragraph","documentboundary"],t.Xn={
-l:1,h:0,j:9,k:8,$:7,0:6,"}":15,"{":14,")":11,"(":10,w:5,W:5,e:3,b:2,B:2,G:17,gg:16,o:20,a:-2,i:-2,g:-2,aw:21,iw:21,
-as:25,ap:26,"a}":26,is:25,ip:26,y:31,Y:32,C:33,"c-s-c":36,p:35,P:34,f:55,F:57,n:47,N:46,f1:48,"a-f1":48,v:51,V:52,c:53,
-"/":54,"?":56,"c-e":62,"c-y":61,"c-down":62,"c-up":61};let I=e=>{let t="";if(!b&&p&&(t="#!no-check\n"),t){
+l:1,h:0,j:9,k:8,$:7,0:6,"}":15,"{":14,")":11,"(":10,w:5,W:22,e:3,E:23,b:2,B:21,G:17,gg:16,o:20,a:-2,i:-2,g:-2,aw:24,
+iw:24,as:28,ap:29,"a}":29,is:28,ip:29,y:31,Y:32,C:33,"c-s-c":36,p:35,P:34,f:55,F:57,n:47,N:46,f1:48,"a-f1":48,v:51,V:52,
+c:53,"/":54,"?":56,"c-e":62,"c-y":61,"c-down":62,"c-up":61};let I=e=>{let t="";if(!b&&p&&(t="#!no-check\n"),t){
 let a=o.pl.keyMappings;o.pl.keyMappings=void 0;try{i.ho("keyMappings",t+e)}catch(e){}o.pl.keyMappings=a}}
 ;o.ul&2&&(x(o.z.keyMappings),o.G||(t.Xn["m-s-c"]=36)),o.pl.keyMappings=e=>{let t=o.wo,n=o.Ke.m,r=o.Nn;x(e)
 ;let l=JSON.stringify,s=o.wo,c=o.Ke.m,u=!!r&&l(o.Nn)!==l(r);((t?!s||l(t)!==l(s):!!r&&!!s)||u)&&i.bn({N:9,m:o.wo,t:o.yo,

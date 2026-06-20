@@ -1,0 +1,113 @@
+diff --git a/vimium-c-source/background/key_mappings.ts b/vimium-c-source/background/key_mappings.ts
+index 0ddcd8a..150182f 100644
+--- a/vimium-c-source/background/key_mappings.ts
++++ b/vimium-c-source/background/key_mappings.ts
+@@ -870,9 +870,9 @@ export const visualKeys_: VisualModeNS.KeyMap = {
+     $: VisualAction.lineBoundary | VisualAction.inc, 0: VisualAction.lineBoundary | VisualAction.dec,
+     "}": VisualAction.paragraph | VisualAction.inc, "{": VisualAction.paragraph | VisualAction.dec,
+     ")": VisualAction.sentence | VisualAction.inc, "(": VisualAction.sentence | VisualAction.dec,
+-    w: VisualAction.vimWord | VisualAction.inc, /* same as w */ W: VisualAction.vimWord | VisualAction.inc,
+-    e: VisualAction.word | VisualAction.inc, b: VisualAction.word | VisualAction.dec,
+-    /* same as b */ B: VisualAction.word | VisualAction.dec,
++    w: VisualAction.vimWord | VisualAction.inc, W: VisualAction.PunctuationSegmentForward,
++    e: VisualAction.word | VisualAction.inc, E: VisualAction.PunctuationSegmentEnd,
++    b: VisualAction.word | VisualAction.dec, B: VisualAction.PunctuationSegmentBack,
+     G: VisualAction.documentBoundary | VisualAction.inc, gg: VisualAction.documentBoundary | VisualAction.dec,
+ 
+     o: VisualAction.Reverse, a: VisualAction.NextKey, i: VisualAction.NextKey, g: VisualAction.NextKey,
+diff --git a/vimium-c-source/content/visual.ts b/vimium-c-source/content/visual.ts
+index ffe5131..79e3a27 100644
+--- a/vimium-c-source/content/visual.ts
++++ b/vimium-c-source/content/visual.ts
+@@ -267,6 +267,66 @@ export const activate = (options: CmdOptions[kFgCmd.visualMode], count: number):
+     return true
+   }
+ 
++  const isSegmentBoundary = (char: string): boolean => !char || (<RegExpOne> /[\s\p{P}\p{S}]/u).test(char)
++
++  const movePunctuationSegment = (command: VisualAction, count: number): void => {
++    const direction: ForwardDir = command === VisualAction.PunctuationSegmentBack ? kDirTy.left : kDirTy.right
++    const toEnd = command === VisualAction.PunctuationSegmentEnd
++    const isMove = mode_ === Mode.Caret
++    let last = "", current = "", seenBoundary = false, seenText = false
++    getDirection("")
++    while (0 < count--) {
++      if (direction === kDirTy.right) {
++        seenBoundary = seenText = false
++        do {
++          last = current
++          extend(kDirTy.right)
++          current = "" + <SelWithToStr> curSelection
++          if (current === last) { break }
++          const char = current.slice(-1)
++          if (isSegmentBoundary(char)) {
++            if (seenText) {
++              toEnd ? extend(kDirTy.left) : (seenBoundary = true)
++              if (toEnd) { break }
++            } else {
++              seenBoundary = true
++            }
++          } else if (seenBoundary || toEnd) {
++            seenText = true
++            if (!toEnd) { break }
++          } else {
++            seenText = true
++          }
++        } while (true)
++      } else {
++        seenBoundary = seenText = false
++        do {
++          last = current
++          extend(kDirTy.left)
++          current = "" + <SelWithToStr> curSelection
++          if (current === last) { break }
++          const char = current[0]
++          if (isSegmentBoundary(char)) {
++            if (seenText) {
++              extend(kDirTy.right)
++              break
++            }
++            seenBoundary = true
++          } else if (seenBoundary) {
++            seenText = true
++            break
++          } else {
++            seenText = true
++          }
++        } while (true)
++      }
++      if (isMove) { collapseToFocus(direction) }
++      current = ""
++    }
++    di_ = direction
++    diType_ = DiType.UnsafeUnknown
++  }
++
+   /** @unknown_di_result */
+ const commandHandler = (command: VisualAction, count: number): void => {
+ 
+@@ -630,6 +690,8 @@ const ensureLine = (command1: number, s0: string): void => {
+     yank(([kYank.Exit, kYank.Exit, kYank.NotExit, ReuseType.current, ReuseType.newFg, kYank.RichTextButNotExit
+           ] as const)[command - VisualAction.Yank])
+     return
++  } else if (command > VisualAction.MaxNotPunctuationSegment && command < VisualAction.MaxNotLexical + 1) {
++    movePunctuationSegment(command, count)
+   } else if (command === VisualAction.LexicalWord && selectCurrentWord()) {
+     mode = VisualModeNS.Mode.Visual
+   } else if (command > VisualAction.MaxNotLexical) {
+diff --git a/vimium-c-source/typings/vimium_c.d.ts b/vimium-c-source/typings/vimium_c.d.ts
+index 2e8768f..3cb73e2 100644
+--- a/vimium-c-source/typings/vimium_c.d.ts
++++ b/vimium-c-source/typings/vimium_c.d.ts
+@@ -153,7 +153,10 @@ declare const enum VisualAction {
+   MinNotWrapSelectionModify = 20,
+   Reverse = MinNotWrapSelectionModify,
+ 
+-  MaxNotLexical = MinNotWrapSelectionModify,
++  MaxNotPunctuationSegment = MinNotWrapSelectionModify,
++  PunctuationSegmentBack, PunctuationSegmentForward, PunctuationSegmentEnd,
++
++  MaxNotLexical = PunctuationSegmentEnd,
+   LexicalWord = MaxNotLexical + VisualModeNS.kG.word,
+   LexicalSentence = MaxNotLexical + VisualModeNS.kG.sentence,
+   LexicalParagraph = MaxNotLexical + VisualModeNS.kG.paragraphboundary,

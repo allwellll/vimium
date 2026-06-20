@@ -153,7 +153,10 @@ declare const enum VisualAction {
   MinNotWrapSelectionModify = 20,
   Reverse = MinNotWrapSelectionModify,
 
-  MaxNotLexical = MinNotWrapSelectionModify,
+  MaxNotPunctuationSegment = MinNotWrapSelectionModify,
+  PunctuationSegmentBack, PunctuationSegmentForward, PunctuationSegmentEnd,
+
+  MaxNotLexical = PunctuationSegmentEnd,
   LexicalWord = MaxNotLexical + VisualModeNS.kG.word,
   LexicalSentence = MaxNotLexical + VisualModeNS.kG.sentence,
   LexicalParagraph = MaxNotLexical + VisualModeNS.kG.paragraphboundary,

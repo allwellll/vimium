@@ -4,7 +4,7 @@
 
 ## 更新时间
 
-- 2026-06-20 10:52 CST
+- 2026-06-20 11:00 CST
 
 ## 改动说明
 
@@ -22,6 +22,10 @@
    - `vip`：选中当前段落。
    - 原有 `vas` / `vap` 保持可用。
 
+3. **大写 `W` / `E` / `B` 片段移动**
+   - 小写 `w` / `e` / `b` 保持原来的词维度。
+   - 大写 `W` / `E` / `B` 按空格、标点和符号分隔的句子片段移动。
+
 3. **调整 `v` 进入模式**
    - 普通模式首次按 `v`：进入 caret / 光标模式。
    - caret 模式中再次按 `v`：切换到 visual / 选取模式。
@@ -31,7 +35,7 @@
 ```text
 vimium-c-source/                         # 修改后的 Vimium C 源码
 vimium-c-pass-y-d/                       # 已构建、可直接加载的扩展目录
-vimium-c-passkey-viw-fix-2026-06-20.zip
+vimium-c-punctuation-segment-2026-06-20.zip
 vimium-c-pass-y-d-vis-vip-viw-vaw-caret-selected.patch          # 本次完整补丁
 vimium-c-pass-y-d.patch                # 早期仅 y/d 放行补丁
 vimium-c-pass-y-d-install.md             # 本地安装说明

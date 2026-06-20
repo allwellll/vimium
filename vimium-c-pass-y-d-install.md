@@ -12,7 +12,8 @@
    - `vis`：选中当前句子。
    - `vip`：选中当前段落。
    - 原有 `vas` / `vap` 仍保留。
-3. 普通模式首次按 `v` 进入 caret / 光标模式；在 caret 模式中再次按 `v` 进入 visual / 选取模式。
+3. 大写 `W` / `E` / `B` 按空格、标点和符号分隔的句子片段移动；小写 `w` / `e` / `b` 保持原词维度。
+4. 普通模式首次按 `v` 进入 caret / 光标模式；在 caret 模式中再次按 `v` 进入 visual / 选取模式。
 
 ## 安装
 
@@ -30,7 +31,7 @@
 
 ```text
 /Users/wangyaqi49/code_room/extention/vimium/vimium-c-pass-y-d
-/Users/wangyaqi49/code_room/extention/vimium/vimium-c-passkey-viw-fix-2026-06-20.zip
-/Users/wangyaqi49/code_room/extention/vimium/vimium-c-passkey-viw-fix-2026-06-20.patch
+/Users/wangyaqi49/code_room/extention/vimium/vimium-c-punctuation-segment-2026-06-20.zip
+/Users/wangyaqi49/code_room/extention/vimium/vimium-c-punctuation-segment-2026-06-20.patch
 /Users/wangyaqi49/code_room/extention/vimium/vimium-c-source
 ```
