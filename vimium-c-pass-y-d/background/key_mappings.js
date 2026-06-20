@@ -122,41 +122,41 @@ type:"title"}],copyCurrentUrl:[19,1,1],copyWindowInfo:[19,1,0,{type:"window"}],c
 debugBackground:[31,1,1,{reuse:1,url:"chrome://extensions/?id=$id",id_mask:"$id",url_mask:!1}],discardTab:[21,1,0],
 dispatchEvent:[9,1,0],duplicateTab:[22,1,20],editText:[13,0,0],enableContentSettingTemp:[42,1,0,{incognito:!0}],
 enableCSTemp:[42,1,0,{incognito:!0}],enterFindMode:[6,1,1,{active:!0,selected:"auto-line"}],enterInsertMode:[3,1,1,{
-insert:!0}],enterVisualLineMode:[12,1,1,{mode:"line"}],enterVisualMode:[12,1,1],findSelected:[6,1,0,{selected:"line"}],
-findSelectedBackwards:[6,1,0,{selected:"line",$count:-1}],firstTab:[24,1,0,{absolute:!0}],focusInput:[12,0,0],
-focusOrLaunch:[31,1,1,{reuse:1}],goBack:[18,0,0,{$count:-1}],goForward:[18,0,0],goNext:[2,1,0,{sed:!0}],
-goPrevious:[2,1,0,{sed:!0,rel:"prev"}],goToRoot:[25,1,0,{}],goUp:[25,1,0,{$count:-1,type:"frame"}],joinTabs:[26,1,0],
-lastTab:[24,1,0,{$count:-1,absolute:!0}],mainFrame:[27,1,1],moveTabLeft:[28,1,0,{$count:-1}],moveTabRight:[28,1,0],
-moveTabToIncognito:[29,1,1,{incognito:!0}],moveTabToNewWindow:[29,1,0],moveTabToNextWindow:[30,1,0],newTab:[20,1,20],
-nextFrame:[4,1,0],nextTab:[24,1,0],openBookmark:[51,1,0],openCopiedUrlInCurrentTab:[31,1,1,{reuse:0,copied:!0}],
-openCopiedUrlInNewTab:[31,1,20,{copied:!0}],openUrl:[31,1,20],parentFrame:[5,1,0],passNextKey:[9,0,0],
-performAnotherFind:[6,1,0,{index:"other"}],performBackwardsFind:[6,1,0,{$count:-1}],performFind:[6,1,0],
-previousTab:[24,1,0,{$count:-1}],quickNext:[24,1,0],reload:[18,0,0,{r:1}],reloadGivenTab:[32,1,0,{single:!0}],
-reloadTab:[32,1,0],removeRightTab:[33,1,0],removeTab:[34,1,0],reopenTab:[36,1,1],reset:[50,1,1],
-restoreGivenTab:[37,1,0,{one:!0}],restoreTab:[37,1,25],runKey:[38,1,0],scrollDown:[4,0,0],scrollFullPageDown:[4,0,0,{
-view:2}],scrollFullPageUp:[4,0,0,{dir:-1,view:2}],scrollLeft:[4,0,0,{dir:-1,axis:"x"}],scrollPageDown:[4,0,0,{dir:.5,
-view:2}],scrollPageUp:[4,0,0,{dir:-.5,view:2}],scrollPxDown:[4,0,0,{view:1}],scrollPxLeft:[4,0,0,{dir:-1,axis:"x",view:1
-}],scrollPxRight:[4,0,0,{axis:"x",view:1}],scrollPxUp:[4,0,0,{dir:-1,view:1}],scrollRight:[4,0,0,{axis:"x"}],
-scrollSelect:[14,0,0],scrollTo:[4,0,0,{dest:"min"}],scrollToBottom:[4,0,0,{dest:"max"}],scrollToLeft:[4,0,0,{axis:"x",
-dest:"min"}],scrollToRight:[4,0,0,{axis:"x",dest:"max"}],scrollToTop:[4,0,0,{dest:"min"}],scrollUp:[4,0,0,{dir:-1}],
-searchAs:[11,0,1,{s:1,copied:!0,selected:!0}],searchInAnother:[39,1,1],sendToExtension:[40,1,0],showHelp:[8,1,1],
-showHud:[41,1,1],showHUD:[41,1,1],showTip:[41,1,1],simBackspace:[12,0,1,{action:"backspace"}],
-simulateBackspace:[12,0,1,{action:"backspace"}],sortTabs:[26,1,0,{sort:"recency",windows:"current"}],
-switchFocus:[12,0,1,{action:"switch"}],toggleContentSetting:[42,1,0],toggleCS:[42,1,0],toggleLinkHintCharacters:[7,1,1,{
-key:"linkHintCharacters"}],toggleMuteTab:[43,1,1],togglePinTab:[44,1,0],toggleReaderMode:[45,1,1,{reader:!0,reuse:0,
-opener:!0}],toggleStyle:[15,0,1],toggleSwitchTemp:[7,1,1],toggleUrl:[45,1,1,{url_mask:!0,reuse:0}],
-toggleViewSource:[45,1,1,{opener:!0,viewSource:!0}],toggleVomnibarStyle:[46,1,1],toggleWindow:[52,1,0],
-visitPreviousTab:[48,1,0],wait:[0,1,0,{wait:"count"}],zoom:[47,1,0],zoomIn:[47,1,0],zoomOut:[47,1,0,{$count:-1}],
-zoomReset:[47,1,0,{reset:!0}]};let C={__proto__:null,newtab:2,queue:18,"cur-queue":16,"new-active":3,"newtab-active":3,
-hover:32,"hover-and-scroll":32,unhover:33,leave:33,focus:34,"download-media":35,"download-image":35,image:37,
-"open-image":37,media:37,search:38,"search-text":38,copy:40,"copy-text":40,"copy-list":57,"copy-url":42,
-"copy-url-list":59,download:44,incognito:45,"open-incognito":45,"open-link":46,"open-url":46,"direct-open":46,
-"open-directly":46,"directly-open":46,"open-direct":46,"copy-image":36,"edit-url":64,edit:65,"edit-text":65,input:67,
-"focus-input":67,editable:67,"focus-editable":67,visual:66,select:66}
+insert:!0}],enterVisualLineMode:[12,1,1,{mode:"line"}],enterVisualMode:[12,1,1,{mode:"caret"}],findSelected:[6,1,0,{
+selected:"line"}],findSelectedBackwards:[6,1,0,{selected:"line",$count:-1}],firstTab:[24,1,0,{absolute:!0}],
+focusInput:[12,0,0],focusOrLaunch:[31,1,1,{reuse:1}],goBack:[18,0,0,{$count:-1}],goForward:[18,0,0],goNext:[2,1,0,{
+sed:!0}],goPrevious:[2,1,0,{sed:!0,rel:"prev"}],goToRoot:[25,1,0,{}],goUp:[25,1,0,{$count:-1,type:"frame"}],
+joinTabs:[26,1,0],lastTab:[24,1,0,{$count:-1,absolute:!0}],mainFrame:[27,1,1],moveTabLeft:[28,1,0,{$count:-1}],
+moveTabRight:[28,1,0],moveTabToIncognito:[29,1,1,{incognito:!0}],moveTabToNewWindow:[29,1,0],
+moveTabToNextWindow:[30,1,0],newTab:[20,1,20],nextFrame:[4,1,0],nextTab:[24,1,0],openBookmark:[51,1,0],
+openCopiedUrlInCurrentTab:[31,1,1,{reuse:0,copied:!0}],openCopiedUrlInNewTab:[31,1,20,{copied:!0}],openUrl:[31,1,20],
+parentFrame:[5,1,0],passNextKey:[9,0,0],performAnotherFind:[6,1,0,{index:"other"}],performBackwardsFind:[6,1,0,{
+$count:-1}],performFind:[6,1,0],previousTab:[24,1,0,{$count:-1}],quickNext:[24,1,0],reload:[18,0,0,{r:1}],
+reloadGivenTab:[32,1,0,{single:!0}],reloadTab:[32,1,0],removeRightTab:[33,1,0],removeTab:[34,1,0],reopenTab:[36,1,1],
+reset:[50,1,1],restoreGivenTab:[37,1,0,{one:!0}],restoreTab:[37,1,25],runKey:[38,1,0],scrollDown:[4,0,0],
+scrollFullPageDown:[4,0,0,{view:2}],scrollFullPageUp:[4,0,0,{dir:-1,view:2}],scrollLeft:[4,0,0,{dir:-1,axis:"x"}],
+scrollPageDown:[4,0,0,{dir:.5,view:2}],scrollPageUp:[4,0,0,{dir:-.5,view:2}],scrollPxDown:[4,0,0,{view:1}],
+scrollPxLeft:[4,0,0,{dir:-1,axis:"x",view:1}],scrollPxRight:[4,0,0,{axis:"x",view:1}],scrollPxUp:[4,0,0,{dir:-1,view:1
+}],scrollRight:[4,0,0,{axis:"x"}],scrollSelect:[14,0,0],scrollTo:[4,0,0,{dest:"min"}],scrollToBottom:[4,0,0,{dest:"max"
+}],scrollToLeft:[4,0,0,{axis:"x",dest:"min"}],scrollToRight:[4,0,0,{axis:"x",dest:"max"}],scrollToTop:[4,0,0,{dest:"min"
+}],scrollUp:[4,0,0,{dir:-1}],searchAs:[11,0,1,{s:1,copied:!0,selected:!0}],searchInAnother:[39,1,1],
+sendToExtension:[40,1,0],showHelp:[8,1,1],showHud:[41,1,1],showHUD:[41,1,1],showTip:[41,1,1],simBackspace:[12,0,1,{
+action:"backspace"}],simulateBackspace:[12,0,1,{action:"backspace"}],sortTabs:[26,1,0,{sort:"recency",windows:"current"
+}],switchFocus:[12,0,1,{action:"switch"}],toggleContentSetting:[42,1,0],toggleCS:[42,1,0],
+toggleLinkHintCharacters:[7,1,1,{key:"linkHintCharacters"}],toggleMuteTab:[43,1,1],togglePinTab:[44,1,0],
+toggleReaderMode:[45,1,1,{reader:!0,reuse:0,opener:!0}],toggleStyle:[15,0,1],toggleSwitchTemp:[7,1,1],
+toggleUrl:[45,1,1,{url_mask:!0,reuse:0}],toggleViewSource:[45,1,1,{opener:!0,viewSource:!0}],
+toggleVomnibarStyle:[46,1,1],toggleWindow:[52,1,0],visitPreviousTab:[48,1,0],wait:[0,1,0,{wait:"count"}],zoom:[47,1,0],
+zoomIn:[47,1,0],zoomOut:[47,1,0,{$count:-1}],zoomReset:[47,1,0,{reset:!0}]};let C={__proto__:null,newtab:2,queue:18,
+"cur-queue":16,"new-active":3,"newtab-active":3,hover:32,"hover-and-scroll":32,unhover:33,leave:33,focus:34,
+"download-media":35,"download-image":35,image:37,"open-image":37,media:37,search:38,"search-text":38,copy:40,
+"copy-text":40,"copy-list":57,"copy-url":42,"copy-url-list":59,download:44,incognito:45,"open-incognito":45,
+"open-link":46,"open-url":46,"direct-open":46,"open-directly":46,"directly-open":46,"open-direct":46,"copy-image":36,
+"edit-url":64,edit:65,"edit-text":65,input:67,"focus-input":67,editable:67,"focus-editable":67,visual:66,select:66}
 ;t.Yn=["character","word","","lineboundary","line","sentence","paragraphboundary","paragraph","documentboundary"],t.Xn={
-l:1,h:0,j:9,k:8,$:7,0:6,"}":15,"{":14,")":11,"(":10,w:5,W:5,e:3,b:2,B:2,G:17,gg:16,o:20,a:-2,i:-2,g:-2,aw:21,as:25,
-ap:26,"a}":26,is:25,ip:26,y:31,Y:32,C:33,"c-s-c":36,p:35,P:34,f:55,F:57,n:47,N:46,f1:48,"a-f1":48,v:51,V:52,c:53,"/":54,
-"?":56,"c-e":62,"c-y":61,"c-down":62,"c-up":61};let I=e=>{let t="";if(!b&&p&&(t="#!no-check\n"),t){
+l:1,h:0,j:9,k:8,$:7,0:6,"}":15,"{":14,")":11,"(":10,w:5,W:5,e:3,b:2,B:2,G:17,gg:16,o:20,a:-2,i:-2,g:-2,aw:21,iw:21,
+as:25,ap:26,"a}":26,is:25,ip:26,y:31,Y:32,C:33,"c-s-c":36,p:35,P:34,f:55,F:57,n:47,N:46,f1:48,"a-f1":48,v:51,V:52,c:53,
+"/":54,"?":56,"c-e":62,"c-y":61,"c-down":62,"c-up":61};let I=e=>{let t="";if(!b&&p&&(t="#!no-check\n"),t){
 let a=o.pl.keyMappings;o.pl.keyMappings=void 0;try{i.ho("keyMappings",t+e)}catch(e){}o.pl.keyMappings=a}}
 ;o.ul&2&&(x(o.z.keyMappings),o.G||(t.Xn["m-s-c"]=36)),o.pl.keyMappings=e=>{let t=o.wo,n=o.Ke.m,r=o.Nn;x(e)
 ;let l=JSON.stringify,s=o.wo,c=o.Ke.m,u=!!r&&l(o.Nn)!==l(r);((t?!s||l(t)!==l(s):!!r&&!!s)||u)&&i.bn({N:9,m:o.wo,t:o.yo,

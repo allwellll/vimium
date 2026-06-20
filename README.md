@@ -4,7 +4,7 @@
 
 ## 更新时间
 
-- 2026-06-19 22:15 CST
+- 2026-06-20 10:31 CST
 
 ## 改动说明
 
@@ -15,18 +15,23 @@
      - `y`：使用最近一次高亮颜色标注当前选区。
      - `d`：删除当前 Vimium 光标 / 选区所在的高亮标记。
 
-2. **支持 `vis` / `vip`**
-   - `vis`：在 visual mode 中选中当前句子。
-   - `vip`：在 visual mode 中选中当前段落。
+2. **支持 Vim 风格 text object**
+   - `viw` / `vaw`：选中当前词。
+   - `vis`：选中当前句子。
+   - `vip`：选中当前段落。
    - 原有 `vas` / `vap` 保持可用。
+
+3. **调整 `v` 进入模式**
+   - 普通模式首次按 `v`：进入 caret / 光标模式。
+   - caret 模式中再次按 `v`：切换到 visual / 选取模式。
 
 ## 目录结构
 
 ```text
 vimium-c-source/                         # 修改后的 Vimium C 源码
 vimium-c-pass-y-d/                       # 已构建、可直接加载的扩展目录
-vimium_c-pass-y-d-vis-vip-2.12.3-chrome.zip
-vimium-c-pass-y-d-vis-vip.patch          # 本次完整补丁
+vimium_c-pass-y-d-vis-vip-viw-vaw-caret-2.12.3-chrome.zip
+vimium-c-pass-y-d-vis-vip-viw-vaw-caret.patch          # 本次完整补丁
 vimium-c-pass-y-d.patch                # 早期仅 y/d 放行补丁
 vimium-c-pass-y-d-install.md             # 本地安装说明
 ```

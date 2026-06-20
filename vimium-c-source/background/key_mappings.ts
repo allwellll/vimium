@@ -744,7 +744,7 @@ export const availableCommands_: { readonly [key in kCName]: CommandsNS.Descript
   enterFindMode: [ kBgCmd.performFind, kCxt.bg, 1, {active: true, selected: "auto-line"} ],
   enterInsertMode: [ kBgCmd.insertMode, kCxt.bg, 1, { insert: true } ],
   enterVisualLineMode: [ kBgCmd.visualMode, kCxt.bg, 1, { mode: "line" } ],
-  enterVisualMode: [ kBgCmd.visualMode, kCxt.bg, 1 ],
+  enterVisualMode: [ kBgCmd.visualMode, kCxt.bg, 1, { mode: "caret" } ],
   findSelected: [ kBgCmd.performFind, kCxt.bg, 0, { selected: "line" } ],
   findSelectedBackwards: [ kBgCmd.performFind, kCxt.bg, 0, { selected: "line", $count: -1 } ],
   firstTab: [ kBgCmd.goToTab, kCxt.bg, 0, { absolute: true } ],
@@ -876,7 +876,7 @@ export const visualKeys_: VisualModeNS.KeyMap = {
     G: VisualAction.documentBoundary | VisualAction.inc, gg: VisualAction.documentBoundary | VisualAction.dec,
 
     o: VisualAction.Reverse, a: VisualAction.NextKey, i: VisualAction.NextKey, g: VisualAction.NextKey,
-    aw: VisualAction.LexicalWord, as: VisualAction.LexicalSentence,
+    aw: VisualAction.LexicalWord, iw: VisualAction.LexicalWord, as: VisualAction.LexicalSentence,
         ap: VisualAction.LexicalParagraph, "a}": VisualAction.LexicalParagraph,
     is: VisualAction.LexicalSentence, ip: VisualAction.LexicalParagraph,
 
