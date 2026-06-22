@@ -42,7 +42,32 @@
     {
       "all_frames": true,
       "js": [
-        "content/vimium-c.js"
+        "lib/env.js",
+        "lib/utils.js",
+        "lib/keyboard_utils.js",
+        "lib/dom_utils.js",
+        "lib/rect.js",
+        "content/dom_ui.js",
+        "content/async_dispatcher.js",
+        "content/hud.js",
+        "content/insert.js",
+        "content/key_handler.js",
+        "content/port.js",
+        "content/pagination.js",
+        "content/marks.js",
+        "content/local_links.js",
+        "content/hint_filters.js",
+        "content/link_actions.js",
+        "content/link_hints.js",
+        "content/omni.js",
+        "content/mode_find.js",
+        "content/visual.js",
+        "content/scroller.js",
+        "content/request_handlers.js",
+        "content/commands.js",
+        "content/extend_click.js",
+        "content/extend_click_ff.js",
+        "content/frontend.js"
       ],
       "match_about_blank": true,
       "match_origin_as_fallback": true,
@@ -50,6 +75,19 @@
         "<all_urls>"
       ],
       "run_at": "document_start"
+    },
+    {
+      "all_frames": true,
+      "js": [
+        "content/extend_click_vc.js"
+      ],
+      "match_about_blank": true,
+      "match_origin_as_fallback": true,
+      "matches": [
+        "<all_urls>"
+      ],
+      "run_at": "document_start",
+      "world": "MAIN"
     }
   ],
   "content_security_policy": {
@@ -70,7 +108,7 @@
   "incognito": "spanning",
   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnaZQnkvrHvNlwXPnSfavEya+9sPtVgBR2hWLsNvwdv6+zHRGr/qhqEbtof1v7gDXzpC5+Dr4kOay6aflw5CaFzA1zyVJySAjpb0RkVh774kp9msRpjyb39obSIWAIB76PTwawEAE+K1f26jXDbTC2gEBe4OWk5KW9u9+KoTmeKLHo73ScR1jFcFaOTbrhwHtIDqj00vpIfrSAofpLIq1gP//Og+FoOT4dF107fwlVfDJuu171svuT68wmcKStl6OANxcnXCXE6OWbeZcjMehcQH41wzTtDugmt0o8w+hJ2WVugwWWmGmE8qSiwo9QYZTJW+5EvMcmNZWUmPbTLGkGQIDAQAB",
   "manifest_version": 3,
-  "minimum_chrome_version": "102",
+  "minimum_chrome_version": "121",
   "name": "__MSG_name__",
   "offline_enabled": true,
   "omnibox": {
@@ -83,7 +121,6 @@
   "optional_permissions": [
     "bookmarks",
     "downloads",
-    "downloads.shelf",
     "contentSettings"
   ],
   "options_ui": {
@@ -107,8 +144,8 @@
   ],
   "short_name": "Vimium C",
   "update_url": "https://clients2.google.com/service/update2/crx",
-  "version": "2.12.3",
-  "version_name": "2.12.2",
+  "version": "2.12.4",
+  "version_name": "2.12.4-local",
   "web_accessible_resources": [
     {
       "resources": [

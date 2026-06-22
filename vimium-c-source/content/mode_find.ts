@@ -17,7 +17,7 @@ import {
 } from "../lib/dom_utils"
 import {
   wdZoom_, prepareCrop_, view_, dimSize_, selRange_, getZoom_, isSelARange, getViewBox_, scrollWndBy_, cropRectS_,
-  setupPageLevelCrops, instantScOpt, boundingRect_, isNotInViewport, set_cropNotReady_
+  setupPageLevelCrops, instantScOpt, boundingRect_, isNotInViewport, set_cropNotReady_, wndSize_
 } from "../lib/rect"
 import {
   ui_box, ui_root, getSelectionParent_unsafe, resetSelectionToDocStart, getBoxTagName_old_cr, collpaseSelection,
@@ -47,8 +47,13 @@ interface ExecuteOptions extends Partial<Pick<CmdOptions[kFgCmd.findMode], "c" |
   /** highlight */ h?: [number, number, Rect[]] | false;
   /** ignore$hasResult */ i?: 1;
   /** just inputted */ j?: 1;
+  /** prefer$viewport */ v?: 1;
   noColor?: BOOL | boolean
   caseSensitive?: boolean;
+}
+type DocumentWithCaretRange = Document & {
+  caretRangeFromPoint?: (x: number, y: number) => Range | null
+  caretPositionFromPoint?: (x: number, y: number) => { offsetNode: Node, offset: number } | null
 }
 
 let isActive: BOOL = 0
@@ -66,6 +71,12 @@ let wholeWord = false
 let wrapAround = true
 let hasResults = false
 let matchCount = 0
+let activeMatchIndex = 0
+let lastMatchStatus = ""
+let savedMatchCount = 0
+let savedActiveMatchIndex = 0
+let savedParsedQuery = ""
+let savedParsedRegexp: RegExpG | null = null
 let latest_options_: CmdOptions[kFgCmd.findMode]
 let coords: null | MarksNS.ScrollInfo = null
 let initialRange: Range | null = null
@@ -93,11 +104,76 @@ let cachedInnerText: { /** innerText */ i: string, /** timestamp */ t: number, n
 let deactivate: (i: FindAction) => void
 let canvas: HTMLCanvasElement | null
 let delayedScrollIntoViewTick_ = 0
+let matchStatusBox: SafeHTMLElement | null = null
+let matchStatusTimer: ValidTimeoutID = TimerID.None
 const kIT = "insertText"
 
 export { findCSS, query_ as find_query, hasResults as find_hasResults, box_ as find_box, styleSelectable,
     styleInHUD, styleSelColorIn, styleSelColorOut, input_ as find_input, deactivate, kIT as kInsertText }
 export function set_findCSS (_newFindCSS: FindCSS): void { findCSS = _newFindCSS }
+
+const resetSelectionToViewportStart = (): void => {
+  const doc1 = doc as DocumentWithCaretRange, maxX = max_(0, wndSize_(1) - 1), maxY = max_(0, wndSize_() - 1),
+  points: readonly (readonly [number, number])[] = [[0, 0], [maxX >> 1, 0], [maxX, 0], [0, maxY >> 2]],
+  sel = getSelection_()
+  for (const point of points) {
+    const range = doc1.caretRangeFromPoint ? doc1.caretRangeFromPoint(point[0], point[1]) : null,
+    pos = !range && doc1.caretPositionFromPoint ? doc1.caretPositionFromPoint(point[0], point[1]) : null
+    if (range) {
+      range.collapse(!0)
+      resetSelectionToDocStart(sel, range)
+      break
+    } else if (pos) {
+      const range1 = doc.createRange()
+      range1.setStart(pos.offsetNode, pos.offset)
+      range1.collapse(!0)
+      resetSelectionToDocStart(sel, range1)
+      break
+    }
+  }
+}
+
+const updateActiveMatchIndex = (sel: Selection): void => {
+  const total = matchCount || savedMatchCount
+  if (!total) { activeMatchIndex = 0; return }
+  const range = selRange_(sel)
+  if (!range) { activeMatchIndex = activeMatchIndex || 1; return }
+  const left = range.cloneRange()
+  left.collapse(!0)
+  left.setStart(doc.body || docEl_unsafe_()!, 0)
+  const text = left + ""
+  const re = parsedRegexp_ || savedParsedRegexp || tryCreateRegExp(escapeAllForRe(parsedQuery_ || savedParsedQuery), ignoreCase ? "gim" : "gm")
+  activeMatchIndex = min_(((re ? text.match(re as RegExpG & RegExpSearchable<0>) : null) || []).length + 1, total)
+  savedActiveMatchIndex = activeMatchIndex
+}
+
+const showMatchStatusAtSelection = (sel: Selection): void => {
+  const total = matchCount || savedMatchCount
+  if (!total) { return }
+  activeMatchIndex ||= savedActiveMatchIndex || 1
+  lastMatchStatus = `(${activeMatchIndex}/${total})`
+  const rect = getSelectionBoundingBox_(sel)
+  clearTimeout_(matchStatusTimer)
+  matchStatusBox && removeEl_s(matchStatusBox)
+  const box = matchStatusBox = createElement_(OnChrome
+      && Build.MinCVer < BrowserVer.MinForcedColorsMode ? getBoxTagName_old_cr() : "div")
+  setClassName_s(box, "R MatchStatus" + fgCache.d)
+  textContent_s(box, lastMatchStatus)
+  const st = box.style, width = 76, height = 32
+  if (rect) {
+    st.left = min_(max_(rect.r + 10, 8), wndSize_(1) - width - 8) + "px"
+    st.top = min_(max_(rect.t - height - 8, 8), wndSize_() - height - 8) + "px"
+  } else {
+    st.left = "50%"
+    st.top = "calc(17vh + 68px)"
+    st.transform = "translateX(-50%)"
+  }
+  addUIElement(box, AdjustType.DEFAULT)
+  matchStatusTimer = timeout_((): void => {
+    matchStatusBox === box && (matchStatusBox = null)
+    removeEl_s(box)
+  }, 1400)
+}
 
 export const activate = (options: CmdOptions[kFgCmd.findMode]): void => {
 
@@ -211,7 +287,7 @@ export const activate = (options: CmdOptions[kFgCmd.findMode]): void => {
       updateQuery(query)
       if (suppressOnInput_) { showCount(1); return }
       restoreSelection()
-      executeFind(!isRegex ? parsedQuery_ : regexMatches ? regexMatches[0] : "", { j: 1, c: options.d, t: options.t })
+      executeFind(!isRegex ? parsedQuery_ : regexMatches ? regexMatches[0] : "", { j: 1, c: options.d, t: options.t, v: 1 })
       showCount(1)
       lastInputTime_ = getTime()
       highlightTimeout_ = options.m ? highlightTimeout_ || timeout_(highlightMany, 200) : 0
@@ -220,13 +296,14 @@ export const activate = (options: CmdOptions[kFgCmd.findMode]): void => {
   const showCount = (changed?: BOOL): void => {
     let count = matchCount
     if (changed) {
-        countEl.dataset.vimium = suppressOnInput_ ? VTr(kTip.paused)
-            : !parsedQuery_ ? "" : VTr(count > 1 ? kTip.nMatches : count ? kTip.oneMatch
-            : hasResults ? kTip.someMatches : kTip.noMatches, [count])
+        lastMatchStatus = suppressOnInput_ ? VTr(kTip.paused)
+            : !parsedQuery_ ? "" : count && activeMatchIndex ? `(${activeMatchIndex}/${count})`
+            : VTr(count > 1 ? kTip.nMatches : count ? kTip.oneMatch : hasResults ? kTip.someMatches : kTip.noMatches, [count])
+        countEl.dataset.vimium = lastMatchStatus
     }
     count = (dimSize_(input_, kDim.scrollW) + countEl.offsetWidth + 35) & ~31
     if (!isSmall || count > 151) {
-      outerBox_.style.width = ((isSmall = count < 152) ? 0 as number | string as string : count + "px")
+      outerBox_.style.width = (isSmall = count < 152) ? "min(440px,82vw)" : "min(860px,82vw)"
     }
   }
   const scrollTo_ = (action: 0 | 1 | 2 | 3 | 9): void => { // up, left, right, down
@@ -303,6 +380,12 @@ export const activate = (options: CmdOptions[kFgCmd.findMode]): void => {
   deactivate = deactivate || ((i: FindAction): void => {
     const styleSheet = styleSelColorIn && styleSelColorIn.sheet, knownHasResults = hasResults
     const knownOptions = latest_options_
+    if (knownHasResults) {
+      savedMatchCount = matchCount
+      savedActiveMatchIndex = activeMatchIndex
+      savedParsedQuery = parsedQuery_
+      savedParsedRegexp = parsedRegexp_
+    }
     const maxNotRunPost = knownOptions.p ? FindAction.ExitForEsc - 1 : FindAction.ExitForEnter - 1
     let el: SafeElement | null | undefined, el2: Element | null
     lastInputTime_ = isActive = 0
@@ -314,6 +397,8 @@ export const activate = (options: CmdOptions[kFgCmd.findMode]): void => {
     outerBox_ && removeEl_s(outerBox_)
     highlighting && highlighting()
     clearTimeout_(highlightTimeout_)
+    clearTimeout_(matchStatusTimer)
+    matchStatusBox && removeEl_s(matchStatusBox)
     if (box_ === deref_(lastHovered_)) { set_lastHovered_(set_lastBubbledHovered_(null)) }
     if (knownOptions.t) {
        extendToCurRange(initialRange!, hasInitialRange!, i !== FindAction.ExitForEnter, styleSheet)
@@ -327,7 +412,7 @@ export const activate = (options: CmdOptions[kFgCmd.findMode]): void => {
       }
     }
     parsedQuery_ = query_ = query0_ = ""
-    historyIndex = matchCount = doesCheckAlive = hasInitialRange = 0
+    historyIndex = matchCount = activeMatchIndex = doesCheckAlive = hasInitialRange = 0
     styleInHUD = onUnexpectedBlur = outerBox_ = isRegex = ignoreCase =
     box_ = innerDoc_ = root_ = input_ = countEl = parsedRegexp_ = canvas =
     deactivate = vApi.n = latest_options_ = initialRange = regexMatches = coords = cachedInnerText = null as never
@@ -381,7 +466,8 @@ export const activate = (options: CmdOptions[kFgCmd.findMode]): void => {
         const hud_showing = !isActive && hud_opacity === 1
         hud_showing && hud_toggleOpacity(0)
         toggleSelectableStyle()
-        executeFind("", options)
+        executeFind("", safer(options).l ? options : {...options, v: 1})
+        isActive && showCount(1)
         if (hasResults && options.m) {
           highlightMany()
         }
@@ -389,8 +475,8 @@ export const activate = (options: CmdOptions[kFgCmd.findMode]): void => {
         if (!hasResults) {
           toggleStyle(1)
           isActive || toggleSelectableStyle()
-        } else {
-          focusFoundLinkIfAny()
+      } else {
+        focusFoundLinkIfAny()
           if (!isActive) {
             whenNextIsEsc_(kHandler.find, kModeId.Find, (): HandlerResult => {
                 const old = initialRange
@@ -418,12 +504,15 @@ export const activate = (options: CmdOptions[kFgCmd.findMode]): void => {
     const outerBox = outerBox_ = createElement_(OnChrome
         && Build.MinCVer < BrowserVer.MinForcedColorsMode ? getBoxTagName_old_cr() : "div"),
     st = outerBox.style
-    st.width = "0";
+    st.width = "min(440px,82vw)";
     setDisplaying_s(outerBox)
     if (wdZoom_ !== 1) { st.zoom = "" + 1 / wdZoom_ }
     setClassName_s(outerBox, "R UI HUD" + fgCache.d)
     box_ = createElement_("iframe")
     setClassName_s(box_, "R UI Find")
+    box_.setAttribute("allowtransparency", "true")
+    box_.style.background = "transparent"
+    box_.style.colorScheme = "light"
     box_.onload = vApi.n = (later): void => {
 //#region on load
 const onLoad2 = (): void => {
@@ -655,6 +744,7 @@ const onHostKeydown = (event: HandlerNS.Event): HandlerResult => {
       highlightMany()
     } else {
       executeFind("", { c: -(keybody > kChar.j), i: 1, t: options.t })
+      showCount(1)
       if (options.m && !highlighting) { highlightTimeout_ ||= timeout_(highlightMany, 200) }
     }
     return HandlerResult.Prevent
@@ -827,6 +917,11 @@ export const updateQuery = (query: string): void => {
   parsedRegexp_ = isRe ? re : null
   activeRegexIndex = 0
   matchCount = matches ? matches.length : 0
+  if (matchCount) {
+    savedMatchCount = matchCount
+    savedParsedQuery = parsedQuery_
+    savedParsedRegexp = parsedRegexp_
+  }
 }
 
 export const executeFind = (query: string | null, options: Readonly<ExecuteOptions>): void => {
@@ -860,6 +955,9 @@ export const executeFind = (query: string | null, options: Readonly<ExecuteOptio
     back && (count = -count);
     const isRe = isRegex, pR = parsedRegexp_
     const wndSel = getSelection_()
+    if (options.v && !highlight && !back && !isRe && wrapAround && (query || parsedQuery_)) {
+      resetSelectionToViewportStart()
+    }
     let regexpNoMatchLimit = 9 * count, dedupID = count + 1, oldReInd: number, selNone: boolean
     let oldAnchor = !options.j && wrapAround && getAccessibleSelectedNode(getSelected()), curSel: Selection
     while (0 < count) {
@@ -911,7 +1009,12 @@ export const executeFind = (query: string | null, options: Readonly<ExecuteOptio
         modifySel(wndSel, 0, !back, kGCh)
       }
     }
-    if (found! && !highlight && (par = par || getSelectionParent_unsafe(curSel = getSelected()))) {
+    if (found! && !highlight) {
+      curSel = getSelected()
+      updateActiveMatchIndex(curSel)
+      showMatchStatusAtSelection(curSel)
+    }
+    if (found! && !highlight && (par = par || getSelectionParent_unsafe(curSel!))) {
       newAnchor = getAccessibleSelectedNode(curSel!)
       posChange = oldAnchor && newAnchor && compareDocumentPosition(oldAnchor, newAnchor)
       newAnchor = newAnchor && (isNode_(newAnchor, kNode.TEXT_NODE) ? parentNode_unsafe_s(newAnchor)!
