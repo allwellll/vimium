@@ -712,7 +712,7 @@ define([ "require", "exports", "../lib/utils", "../lib/keyboard_utils", "../lib/
         "cm".includes(key[0]) ? deactivate() : yank(key < "b" ? 8 /* kYank.NotExit */ : 7 /* kYank.Exit */);
         return utils_1.esc(2 /* HandlerResult.Prevent */);
       }
-      if (!currentPrefix && !key_handler_1.currentKeys && (key === "y" || key === "d") && dom_ui_1.getSelectionText(1, curSelection)) {
+      if (!currentPrefix && !key_handler_1.currentKeys && (key === "y" || key === "d" || key.length === 1 && key >= "1" && key <= "5") && dom_ui_1.getSelectionText(1, curSelection)) {
         retainSelection = 1;
         return -1 /* HandlerResult.PassKey */;
       }
