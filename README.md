@@ -8,14 +8,14 @@
 
 ## 改动说明
 
-1. **Visual mode 放行 `d` / `m` / `1-5`**
-   - 在 Vimium C visual mode 中，未输入数字前缀或组合前缀，且当前有选中文本时，`d`、`m`、`1`、`2`、`3`、`4`、`5` 不再由 Vimium C 消费。
+1. **Visual mode 放行 `d` / `m` / `Alt+M` / `1-5`**
+   - 在 Vimium C visual mode 中，未输入数字前缀或组合前缀，且当前有选中文本时，`d`、`m`、`Alt+M`、`1`、`2`、`3`、`4`、`5` 不再由 Vimium C 消费。
    - 这些按键会 pass through 给页面和其他扩展，不需要在 Vimium C 的排除按键里配置。
    - `y` 不再放行，保留 Vimium C 原本的复制 / yank 功能。
    - 没有选中文本时，以上按键保持 Vimium C 原有行为，不会全站失效。
    - 配合 Web Highlight 扩展后：
      - `d`：删除当前 Vimium 光标 / 选区所在的高亮标记。
-     - `m`：交给页面或 Web Highlight 扩展处理当前选区。
+     - `m` / `Alt+M`：交给页面、Web Highlight 或其他扩展处理当前选区。
      - `1-5`：使用对应编号的高亮颜色标注当前选区。
 
 2. **支持 Vim 风格 text object**

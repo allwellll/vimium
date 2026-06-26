@@ -880,7 +880,8 @@ const ensureLine = (command1: number, s0: string): void => {
       "cm".includes(key[0]) ? deactivate() : yank(key < "b" ? kYank.NotExit : kYank.Exit)
       return esc!(HandlerResult.Prevent)
     }
-    if (!currentPrefix && !currentKeys && (key === "d" || key === "m" || key.length === 1 && key >= "1" && key <= "5")
+    if (!currentPrefix && !currentKeys && (key === "d" || key === "m" || key === "a-m"
+        || key.length === 1 && key >= "1" && key <= "5")
         && getSelectionText(1, curSelection)) {
       retainSelection = 1
       return HandlerResult.PassKey
